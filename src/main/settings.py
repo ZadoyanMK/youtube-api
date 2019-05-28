@@ -11,7 +11,9 @@ SECRET_KEY = 'ia9s9gxuhaai#z*yb9&3nsn)iu)$3g9r6$*ya)+zgs%9b9c*!a'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+APPEND_SLASH = True
+
+ALLOWED_HOSTS = config.get('APP', 'allowed_hosts').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,6 +22,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'knox',
+    'accounts',
+    'youtube_media',
 ]
 
 MIDDLEWARE = [
@@ -65,9 +72,7 @@ DATABASES = {
         'HOST': config.get('DB', 'host'),
         'PORT': config.get('DB', 'port'),
     },
-
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -95,3 +100,35 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+# # Logging configuration
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': './logs/debug.log',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
+
+CELERY_BROKER_URL = config.get('RABBIT', 'url')
+CELERY_RESULT_BACKEND = config.get('RABBIT', 'url')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Kiev'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':
+    ('knox.auth.TokenAuthentication', ),
+}

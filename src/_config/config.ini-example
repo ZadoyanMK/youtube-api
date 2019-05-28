@@ -1,0 +1,12 @@
+[DB]
+host=mysql
+user=user
+name=youplayer
+pass=adminpass
+port=3306
+
+[RABBIT]
+url=amqp://user:user@rabbitmq:5672
+
+[APP]
+allowed_hosts=*,
