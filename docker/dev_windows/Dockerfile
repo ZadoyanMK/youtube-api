@@ -4,7 +4,7 @@ COPY ./src /src
 
 WORKDIR /src
 
-RUN pip install --no-cache-dir -r requirements/dev.txt
+RUN pip install --no-cache-dir -r requirements/prod.txt
 
 COPY ./docker/dev_windows/entrypoint.sh /entrypoint.sh
 

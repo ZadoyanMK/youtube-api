@@ -4,5 +4,4 @@ celery==4.3
 Pillow
 djangorestframework==3.9.4
 django-rest-knox==4.0.1
-mysqlclient
 # django-cors-headers
