@@ -132,3 +132,5 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
     ('knox.auth.TokenAuthentication', ),
 }
+
+YOUTUBE_API_KEY = config.get('APP', 'youtube_api_key')
