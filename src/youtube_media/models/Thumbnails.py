@@ -9,8 +9,8 @@ class Thumbnails(models.Model):
     )
     type = models.CharField(max_length=64)
     url = models.CharField(max_length=512)
-    width = models.DecimalField(default=0)
-    height = models.DecimalField(default=0)
+    width = models.IntegerField(default=0)
+    height = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.type}'

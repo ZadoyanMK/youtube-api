@@ -9,10 +9,8 @@ class RequestData(models.Model):
     full_url = models.CharField(max_length=512)
     region = models.CharField(max_length=16)
     etag = models.CharField(max_length=256)
-    next_page = models.CharField(max_length=64, blank=True,
-        null=True,)
-    prev_page = models.CharField(max_length=64, blank=True,
-        null=True,)
+    next_page = models.CharField(max_length=64, blank=True, null=True,)
+    prev_page = models.CharField(max_length=64, blank=True, null=True,)
 
     updated_at = models.DateTimeField(db_index=True, auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)

@@ -6,4 +6,4 @@ class RequestDataSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = RequestData
-        fields = ('id', 'data')
+        fields = ('id', 'data', 'next_page', 'prev_page')
