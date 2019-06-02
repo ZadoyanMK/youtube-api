@@ -6,7 +6,7 @@ class Links(models.Model):
     visit_count = models.IntegerField(default=0, db_index=True)
     url = models.CharField(max_length=512)
     hash_url = models.CharField(max_length=16, db_index=True)
-    etag = models.CharField(max_length=256)
+    etag = models.CharField(max_length=255, unique=True)
     published_at = models.DateTimeField(db_index=True)
     channel_id = models.CharField(max_length=64)
     title = models.CharField(max_length=128)

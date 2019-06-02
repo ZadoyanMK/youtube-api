@@ -8,7 +8,7 @@ class RequestData(models.Model):
     hash_data = models.CharField(max_length=16, db_index=True)
     full_url = models.CharField(max_length=512)
     region = models.CharField(max_length=16)
-    etag = models.CharField(max_length=256)
+    etag = models.CharField(max_length=255, unique=True)
     next_page = models.CharField(max_length=64, blank=True, null=True,)
     prev_page = models.CharField(max_length=64, blank=True, null=True,)
 

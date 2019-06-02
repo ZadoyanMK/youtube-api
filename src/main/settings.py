@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'knox',
     'accounts',
     'youtube_media',
+    'celery_workers'
 ]
 
 MIDDLEWARE = [
