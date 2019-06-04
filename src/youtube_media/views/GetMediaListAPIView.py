@@ -17,6 +17,16 @@ class GetMediaListAPIView(generics.GenericAPIView):
 
     def validate_rquest_data(self, data) -> dict:
         ctx = data
+        
+        del ctx['request_data']["hash_data"]
+        del ctx['request_data']["full_url"]
+        del ctx['request_data']["region"]
+        del ctx['request_data']["etag"]
+        ctx['request_data']['click_count'] = 1
+
+        for x in ctx['links']:
+            del x['etag']
+            x['featured'] = False
         return ctx
 
     def validate_db_data(self, data) -> dict:
@@ -26,6 +36,7 @@ class GetMediaListAPIView(generics.GenericAPIView):
             x['title'] = x['title'].encode('iso-8859-1').decode('utf-8')
             x['description'] = x['description'].encode('iso-8859-1').decode('utf-8')
             x['channel_title'] = x['channel_title'].encode('iso-8859-1').decode('utf-8')
+            x['featured'] = False
         
         return ctx
 
@@ -73,16 +84,15 @@ class GetMediaListAPIView(generics.GenericAPIView):
         q = request.data.get('q', '').replace(' ', '+')
         hash_q = hashlib.md5(q.encode()).hexdigest()
 
-        # try:
-        #     r = RequestData.objects.get(hash_data=hash_q)
-        #     if r.click_count > 0:
-        #         data = self.validate_db_data(self.get_from_db(r))
-        #     else:
-        #         data = self.validate_rquest_data(self.send_request(request))
-        # except RequestData.DoesNotExist:
-        #     data = self.validate_rquest_data(self.send_request(request))
+        try:
+            r = RequestData.objects.get(hash_data=hash_q)
+            if r.click_count > 0:
+                data = self.validate_db_data(self.get_from_db(r))
+            else:
+                data = self.validate_rquest_data(self.send_request(request))
+        except RequestData.DoesNotExist:
+            data = self.validate_rquest_data(self.send_request(request))
 
-        data = self.validate_rquest_data(self.send_request(request))
         return Response({
                     'data': data
                 })
