@@ -17,11 +17,23 @@ services:
       - youplayer
     depends_on:
       - mysql
+#      - rabbitmq
     restart: always
+#  celery:
+#    container_name: youplayer_celery_container
+#    <<: *app
+#    volumes:
+#      - ./src:/src
+#    command: celery -A main worker -l info
+#    networks:
+#      - youplayer
+#    depends_on:
+#      - mysql
+#      - rabbitmq
+#    restart: always
   mysql:
     container_name: youplayer_mysql_container
     image: mysql:5.7
-    restart: always
     volumes:
       - ./data:/var/lib/mysql
     environment:

@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'knox',
     'accounts',
     'youtube_media',
-    'celery_workers'
 ]
 
 MIDDLEWARE = [
@@ -129,9 +128,11 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Kiev'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
     ('knox.auth.TokenAuthentication', ),
 }
 
 YOUTUBE_API_KEY = config.get('APP', 'youtube_api_key')
+ITEMS_PER_PAGE = config.get('APP', 'items_per_page')

@@ -11,3 +11,4 @@ url=amqp://user:user@rabbitmq:5672
 [APP]
 allowed_hosts=*,
 youtube_api_key=
+items_per_page=25
