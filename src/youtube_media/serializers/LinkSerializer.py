@@ -6,6 +6,5 @@ class LinkSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Links
-        fields = (
-            'id', 'url', 'hash_url', 'published_at', 'title',
-            'description', 'channel_title')
+        # fields = '__all__'
+        exclude = ('id', 'updated_at', 'created_at', 'etag')

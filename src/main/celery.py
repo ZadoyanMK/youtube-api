@@ -8,5 +8,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
 app = Celery('celery_app')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-app.conf.timezone = 'Europe /Kiev'
+app.conf.timezone = 'Europe/Kiev'
 app.autodiscover_tasks()
+app.conf.task_routes = {
+    "youtube_media.tasks.*": {'queue': 'save_items'}
+}
