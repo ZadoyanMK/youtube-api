@@ -93,6 +93,4 @@ class GetMediaListAPIView(generics.GenericAPIView):
         except RequestData.DoesNotExist:
             data = self.validate_rquest_data(self.send_request(request))
 
-        return Response({
-                    'data': data
-                })
+        return Response({'data': data, "error": None})

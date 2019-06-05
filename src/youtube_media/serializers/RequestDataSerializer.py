@@ -8,4 +8,4 @@ class RequestDataSerializer(serializers.ModelSerializer):
         model = RequestData
         # fields = ('id', 'data', 'next_page', 'prev_page')
         exclude = ('id', 'updated_at', 'created_at', 'etag',
-            'hash_data', 'full_url', 'region')
+                   'hash_data', 'full_url', 'region')

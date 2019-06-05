@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'knox',
     'accounts',
     'youtube_media',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,7 @@ CELERY_TIMEZONE = 'Europe/Kiev'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
     ('knox.auth.TokenAuthentication', ),
+    'EXCEPTION_HANDLER': 'helpers.drf_custom_exception_handler'
 }
 
 YOUTUBE_API_KEY = config.get('APP', 'youtube_api_key')

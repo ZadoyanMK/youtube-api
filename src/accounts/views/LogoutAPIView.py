@@ -1,6 +1,6 @@
 from knox import views
 from django.contrib.auth.signals import user_logged_in, user_logged_out
-from rest_framework import status, exceptions
+from rest_framework import status, permissions
 from rest_framework.response import Response
 
 
