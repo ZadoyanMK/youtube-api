@@ -1,41 +1,28 @@
 <template>
-    <v-layout justify-center>
-        <v-flex xs12 lg6>
+    
+    <v-flex xs12 sm6 md4 lg3 class="pl-1 pb-2">
         <v-card>
-            <v-flex d-flex>
-                <v-flex xs4>
-                    <v-img
-                    :src="$props.preview_url"
-                    max-height="200"
-
-                    position="left"
-                    aspect-ratio="1"
-                    contain
-                    >
-                    <template v-slot:placeholder>
-                        <v-layout
-                        align-center
-                        justify-center
-                        ma-0
-                        >
-                        <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                        </v-layout>
-                    </template>
-                    </v-img>
-                </v-flex>
-                <v-flex xs8>
-                    <v-card-title >
-                        <a @click.stop="showDialog($props.video_id)"> {{$props.title}} </a>
-                    </v-card-title>
-
-                    <v-card-text >
-                    {{$props.description}}
-                    </v-card-text>
-                </v-flex>
-            </v-flex>
+            <v-img
+                class="white--text"
+                height="200px"
+                :src="$props.preview_url"
+                >
+                <v-container fluid pt-1 pr-1>
+                    <v-layout justify-end row>
+                        <v-btn icon >
+                            <v-icon color="white">favorite</v-icon>
+                        </v-btn>
+                    </v-layout>
+                </v-container>
+            </v-img>
+            <v-card-title>
+                <div>
+                    <span class="headline"> <a @click.stop="showDialog($props.video_id)">{{$props.title}}</a></span><br>
+                    <span class="grey--text">Number 10</span><br>
+                </div>
+            </v-card-title>
         </v-card>
-        </v-flex>
-    </v-layout>
+    </v-flex>    
 </template>
 
 <script>
