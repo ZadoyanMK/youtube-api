@@ -1,12 +1,16 @@
 // Import Vue
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Vuetify from 'vuetify';
 
 // Import Vue App, routes, store
 import App from './App';
 import routes from './routes';
+import 'vuetify/dist/vuetify.min.css'
+import "./styles/main.scss";
 
 Vue.use(VueRouter);
+Vue.use(Vuetify)
 
 // Configure router
 const router = new VueRouter({

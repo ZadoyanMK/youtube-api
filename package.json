@@ -21,7 +21,8 @@
   "dependencies": {
     "@babel/polyfill": "~7.2",
     "vue": "~2.6",
-    "vue-router": "~3.0"
+    "vue-router": "~3.0",
+    "vuetify": "^1.5.14"
   },
   "devDependencies": {
     "@babel/core": "~7.2",
