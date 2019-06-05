@@ -3,6 +3,7 @@ from rest_framework import (
 from rest_framework.response import Response
 from ..serializers import LinkSerializer
 from ..models import Featured, Links
+from ..tasks import featured_links
 from exceptions import NoVideoIdException
 
 
@@ -36,23 +37,27 @@ class FeaturedMediaAPIViewSet(mixins.CreateModelMixin,
     def create(self, request, *args, **kwargs):
         self.check_video_id(request)
 
-        link = Links.objects.get(video_id=request.data.get('video_id'))
-        Featured.objects.create(
-            link=link, user=request.user
-        )
+        ctx = {
+            'video_id': request.data.get('video_id'),
+            'user_id': request.user.id
+        }
+        featured_links.delay(ctx, True)
 
         return Response({
             'data': {
-                'link': self.get_serializer(link).data
+                'message': "Is saving!"
             }
         }, status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         self.check_video_id(request)
-        link = Links.objects.get(video_id=request.data.get('video_id'))
-        f = Featured.objects.get(link=link, user=request.user)
-        f.delete()
-
+        ctx = {
+            'video_id': request.data.get('video_id'),
+            'user_id': request.user.id
+        }
+        featured_links.delay(ctx, False)
         return Response({
-            'data': {}
+            'data': {
+                'message': "Is removing!"
+            }
         }, status.HTTP_204_NO_CONTENT)

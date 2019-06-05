@@ -11,5 +11,6 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.timezone = 'Europe/Kiev'
 app.autodiscover_tasks()
 app.conf.task_routes = {
-    "youtube_media.tasks.*": {'queue': 'save_items'}
+    "youtube_media.tasks.save_items": {'queue': 'save_items'},
+    "youtube_media.tasks.featured_links": {'queue': 'featured_links'},
 }

@@ -1,12 +1,11 @@
 from main.celery import app
-from .models import (
+from ..models import (
     Links, RequestData, RequestLinkConn
 )
 
 
 @app.task
 def save_items(d):
-
     data = d
     for x in data['links']:
         x['title'] = x['title'].encode('utf-8').decode('iso-8859-1')
@@ -23,7 +22,7 @@ def save_items(d):
             l = Links.objects.get(video_id=x['video_id'])
         except Links.DoesNotExist:
             l = Links.objects.create(**x)
-        
+
         links.append(l)
 
     try:
