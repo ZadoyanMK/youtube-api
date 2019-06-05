@@ -32,10 +32,10 @@
         },
 
         methods: {
-            sendMessage: () => {
+            sendMessage: function() {
                 this.clearMessage()
             },
-            clearMessage: () => {
+            clearMessage: function(){
                 this.message = ''
             },
         }

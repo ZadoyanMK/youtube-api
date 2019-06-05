@@ -6,12 +6,14 @@
             :description="item.description" 
             :video_id="item.video_id"
             :preview_url='item.preview_url'/>
+        <media-element ref="media"/>
     </v-container>
 </template>
 
 <script>
     import BigSearch from '@/components/search/BigSearch';
     import SearchItem from '@/components/search/SearchItem';
+    import MediaElement from '@/components/search/MediaElement';
 
     export default {
         data: () => {
@@ -27,9 +29,12 @@
                 ]
             }
         },
+        methods: {
+        },
         components: {
             'big-search': BigSearch,
             'search-item': SearchItem,
+            'media-element': MediaElement,
         }
     }
 </script>

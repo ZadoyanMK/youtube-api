@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import Vuetify from 'vuetify';
+import VueYouTubeEmbed from 'vue-youtube-embed'
 
 // Import Vue App, routes, store
 import App from './App';
@@ -15,6 +16,7 @@ import "./styles/main.scss";
 Vue.use(VueRouter);
 Vue.use(Vuetify)
 Vue.use(Vuex);
+Vue.use(VueYouTubeEmbed);
 
 // Configure router
 const router = new VueRouter({
