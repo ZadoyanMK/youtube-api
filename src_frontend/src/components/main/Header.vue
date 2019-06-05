@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar color="red darken-2">
+  <v-toolbar>
     <v-toolbar-title class="toolbar-title">YouPlayer</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
