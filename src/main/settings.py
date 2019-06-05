@@ -27,8 +27,6 @@ INSTALLED_APPS = [
     'knox',
     'accounts',
     'youtube_media',
-    'frontend',
-
     'django_extensions',
 ]
 

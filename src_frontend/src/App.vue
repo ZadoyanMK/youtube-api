@@ -1,10 +1,23 @@
 <template>
-  <div>
-    <router-link to="/">
-      Home 1
-    </router-link> | <router-link to="/medium">
-      Medium
-    </router-link>
-    <router-view />
-  </div>
+  <v-app>
+    <main-header />
+    <v-content>
+      
+        <router-view />
+    </v-content>
+    <main-footer />
+  </v-app>
 </template>
+
+<script>
+import Header from '@/components/main/Header';
+import Footer from '@/components/main/Footer';
+
+export default {
+  name: "app",
+  components: {
+    'main-header': Header,
+    'main-footer': Footer
+  }
+}
+</script>

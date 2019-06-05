@@ -5,7 +5,7 @@ services:
     container_name: youplayer_python_container
     build:
       context: .
-      dockerfile: ./docker/dev/Dockerfile
+      dockerfile: ./docker/dev/python/Dockerfile
     environment:
       - PYTHONUNBUFFERED=1
     volumes:
