@@ -1,5 +1,7 @@
 <template>
-    <v-container fluid class="scroll-y" >
+<div>
+    <main-header/>
+    <v-container  >
         <big-search />
         <v-layout flex class="pt-0">
             <div class="headline pt-2">
@@ -17,6 +19,7 @@
         </v-layout>
         
         <v-divider color="grey" class="mb-2"/>
+
         <v-layout row wrap v-scroll="onScroll">
         <search-item v-for="item in this.items" :key="item.video_id"
             :item="item"/>
@@ -44,13 +47,25 @@
         >
             <v-icon color="black" large>account_circle</v-icon>
         </v-btn> -->
+        
     </v-container>
+
+    <login-form ref="loginForm" />
+    <register-form ref="registerForm" />
+    <user-info ref="userInfo" />
+    
+  </div>  
 </template>
 
 <script>
     import BigSearch from '@/components/search/BigSearch';
     import SearchItem from '@/components/search/SearchItem';
     import MediaElement from '@/components/search/MediaElement';
+    import Header from '@/components/main/Header';
+    import LoginForm from "@/components/user/LoginForm";
+    import RegisterForm from "@/components/user/RegisterForm";
+    import UserInfo from "@/components/user/UserInfo";
+    
 
     export default {
         methods: {
@@ -96,31 +111,7 @@
                         preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
                         featured: false,
                     },
-                    {
-                        id: 2,
-                        title: '"ぼく官3 成田WW StageS01 Good-bye and Hello!①"',
-                        description: 'first descr',
-                        video_id: 'RCNJPe1juCbM',
-                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
-                        featured: false,
-                    },
-                    {
-                        id: 2,
-                        title: '"ぼく官3 成田WW StageS01 Good-bye and Hello!①"',
-                        description: 'first descr',
-                        video_id: 'RCNJP1jwq2uCbM',
-                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
-                        featured: false,
-                    },
-                    
-                    {
-                        id: 2,
-                        title: '"ぼく官3 成田WW StageS01 Good-bye and Hello!①"',
-                        description: 'first descr',
-                        video_id: 'RCNJP13juCbM',
-                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
-                        featured: false,
-                    },
+                  
                 ]
             }
         },
@@ -128,6 +119,10 @@
             'big-search': BigSearch,
             'search-item': SearchItem,
             'media-element': MediaElement,
+            'login-form': LoginForm,
+            'register-form': RegisterForm,
+            'user-info': UserInfo,
+            'main-header': Header,
         }
     }
 </script>
