@@ -6,11 +6,7 @@
     >
         <v-card class="elevation-12">
               <v-toolbar color="grey lighten-2">
-                <v-toolbar-title>Login form</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-tooltip bottom>
-                  <span>Source</span>
-                </v-tooltip>
+                <v-toolbar-title>Register form</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <v-form
@@ -26,6 +22,14 @@
                   :rules="usernameRules"
                   type="text"/>
 
+                  <v-text-field 
+                  v-model="email"
+                  prepend-icon="alternate_email" 
+                  name="email" 
+                  label="Email"
+                  :rules="emailRules"
+                  type="email"/>
+
                   <v-text-field
                   v-model="password"
                   prepend-icon="lock" 
@@ -38,13 +42,23 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn flat color="red darken-2" @click="close">Dissmis</v-btn>
+                <v-btn 
+                    flat 
+                    color="red darken-2" 
+                    @click="close"
+                    :disabled="isLoading"    
+                >Dissmis</v-btn>
                 <v-btn 
                   flat 
                   color="green darken-1" 
                   @click="handleData"
-                  :disabled="!valid"
+                  :disabled="!valid || isLoading"
                 >Login</v-btn>
+                <v-progress-circular
+                  v-show="isLoading"
+                  indeterminate
+                  color="grey darken-2"
+                ></v-progress-circular>
               </v-card-actions>
             </v-card>
     </v-dialog>
@@ -54,6 +68,7 @@
     export default {
         data: () => {
             return {
+                isLoading: false,
               username: "",
               password: "",
               valid: true,
@@ -68,7 +83,12 @@
               ],
               usernameRules: [
                 v => !!v || 'Required.'
-              ]
+              ],
+              email: "",
+              emailRules: [
+                v => !!v || 'Required',
+                v => /.+@.+/.test(v) || 'E-mail must be valid'
+            ],
           }
         },
         methods: {
@@ -80,7 +100,8 @@
               this.dialog = !this.dialog;
           },
           handleData() {
-            this.isInvalid = this.$refs.form.validate()
+            if (this.$refs.form.validate())
+              this.isLoading = true;
           }
         }
     }

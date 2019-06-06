@@ -4,7 +4,7 @@
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-btn flat @click.stop="showLoginForm">Login</v-btn>
-      <v-btn flat>Register</v-btn>
+      <v-btn flat @click.stop="showRegisterForm">Register</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -15,6 +15,9 @@
     methods: {
       showLoginForm() {
         this.$parent.$refs.loginForm.show();
+      },
+      showRegisterForm() {
+        this.$parent.$refs.registerForm.show();
       }
     },
     components: {
