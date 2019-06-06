@@ -1,7 +1,7 @@
 <template>
     
     <v-flex xs12 sm6 md4 lg3 class="pl-1 pb-2">
-        <v-card height="320">
+        <v-card class="search-card-item">
             <v-img
                 class="white--text search-item-img"
                 height="200px"

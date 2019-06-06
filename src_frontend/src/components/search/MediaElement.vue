@@ -11,7 +11,7 @@
                 </div> 
                 <!-- <v-layout row justify-end> -->
                     <!-- <v-spacer /> -->
-                <v-btn icon @click="dialog = false" class="mr-0 media-close-btn">
+                <v-btn icon @click="close" class="mr-0 media-close-btn">
                     <v-icon color="grey lighten-1" medium>clear</v-icon>
                 </v-btn>
                 <!-- </v-layout> -->
@@ -19,7 +19,7 @@
 
         <youtube 
             :video-id="video_id" 
-            @ready="ready" 
+            @ready="ready"
             @playing="playing" 
              />
         </v-card>
@@ -38,6 +38,10 @@
             }
         },
         methods: {
+            close() {
+                this.dialog = false;
+                this.playing = false;
+            },
             show: function(video_id) {
                 this.dialog = !this.dialog;
                 this.video_id = video_id;
@@ -45,7 +49,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
