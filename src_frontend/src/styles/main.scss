@@ -1,2 +1,14 @@
 @import "./header_footer";
 @import "./search.scss";
+
+
+.auth-detail-btn, .auth-detail-btn:hover{
+    position: fixed;
+    right: 8px;
+    bottom: 10px;
+    z-index: 3;
+}
+.auth-detail-btn-moved, 
+.auth-detail-btn-moved:hover {
+    bottom: 80px;
+}

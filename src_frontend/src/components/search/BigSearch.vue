@@ -3,8 +3,9 @@
     <v-container >
         <v-layout justify-center row>
             <v-text-field
-                class="search-field"
+                class="search-field headline"
                 v-model="message"
+                autofocus
                 append-outer-icon="send"
                 prepend-icon="search"
                 

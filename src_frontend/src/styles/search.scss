@@ -1,5 +1,6 @@
 .search-field{
-    max-width: 100vh;
+    max-width: 130vh;
+    // font-size: 90px;
 }
 .youtube-player {
     width: 600px;
@@ -21,6 +22,9 @@
     position: absolute;
     right: 6px;
     margin-top: 0;
+}
+.media-close-btn:hover {
+    i {color: black !important;}
 }
 
 .search-card-item{
@@ -45,4 +49,8 @@
     .search-card-item{
         height: 330px;
     }
+}
+
+.main-divider{
+    border-width: thin 0 2px 1px;
 }

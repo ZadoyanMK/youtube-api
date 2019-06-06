@@ -1,14 +1,49 @@
 <template>
-    <v-container fluid>
+    <v-container fluid class="scroll-y" >
         <big-search />
-        <v-layout row wrap>
+        <v-layout flex class="pt-0">
+            <div class="headline pt-2">
+                Results:
+            </div>
+            <v-spacer />
+            <div class="pt-2">
+                <v-btn icon class="ma-0">
+                    <v-icon color="grey darken-1" medium>keyboard_arrow_left</v-icon>
+                </v-btn>
+                <v-btn icon class="ma-0">
+                    <v-icon color="grey darken-1" medium>keyboard_arrow_right</v-icon>
+                </v-btn>
+            </div>
+        </v-layout>
+        
+        <v-divider color="grey" class="mb-2"/>
+        <v-layout row wrap v-scroll="onScroll">
         <search-item v-for="item in this.items" :key="item.video_id"
-            :title="item.title" 
-            :description="item.description" 
-            :video_id="item.video_id"
-            :preview_url='item.preview_url'/>
+            :item="item"/>
         <media-element ref="media"/>
         </v-layout>
+        <v-btn
+            v-show="displayReturnButton"
+            fixed
+            dark
+            fab
+            bottom
+            right
+            color="grey lighten-1"
+            @click="returnToTop"
+        >
+            <v-icon color="black" large>keyboard_arrow_up</v-icon>
+        </v-btn>
+        <!-- <v-btn
+            dark
+            fab
+            color="blue lighten-1"
+            class="auth-detail-btn"
+            :class="displayReturnButton ? 'auth-detail-btn-moved' : ''"
+            icon
+        >
+            <v-icon color="black" large>account_circle</v-icon>
+        </v-btn> -->
     </v-container>
 </template>
 
@@ -18,34 +53,76 @@
     import MediaElement from '@/components/search/MediaElement';
 
     export default {
+        methods: {
+            onScroll (e) {
+                this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
+            },
+            returnToTop() {
+                this.$vuetify.goTo(0, {
+                    duration: 200,
+                    offset: 0,
+                    easing: 'linear'
+                });
+            }
+        },
+        watch:{
+            offsetTop (o, n) {
+                if (n >= this.displayReturnButtonValue) {
+                    this.displayReturnButton = true;
+                } else {
+                    this.displayReturnButton = false;
+                }
+            }
+        },
         data: () => {
             return {
+                displayReturnButtonValue: 200,
+                displayReturnButton: false,
+                offsetTop: 0,
                 items: [
                     {
                         id: 1,
                         title: 'First',
                         description: 'first descr',
                         video_id: '_8aKKEjIO2g',
-                        preview_url: 'https://i.ytimg.com/vi/_8aKKEjIO2g/hqdefault.jpg'
+                        preview_url: 'https://i.ytimg.com/vi/_8aKKEjIO2g/hqdefault.jpg',
+                        featured: false,
                     },
                     {
                         id: 2,
                         title: '"ぼく官3 成田WW StageS01 Good-bye and Hello!①"',
                         description: 'first descr',
                         video_id: 'RCNJP1juCbM',
-                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg"
+                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
+                        featured: false,
                     },
                     {
-                        id: 3,
-                        title: ' "Hello - หน้ากากเกอิชา | THE MASK SINGER หน้ากากนัก',
+                        id: 2,
+                        title: '"ぼく官3 成田WW StageS01 Good-bye and Hello!①"',
                         description: 'first descr',
-                        video_id: 'bqEQTzNbL-I',
-                        preview_url: "https://i.ytimg.com/vi/bqEQTzNbL-I/hqdefault.jpg"
-                    }
+                        video_id: 'RCNJPe1juCbM',
+                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
+                        featured: false,
+                    },
+                    {
+                        id: 2,
+                        title: '"ぼく官3 成田WW StageS01 Good-bye and Hello!①"',
+                        description: 'first descr',
+                        video_id: 'RCNJP1jwq2uCbM',
+                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
+                        featured: false,
+                    },
+                    
+                    {
+                        id: 2,
+                        title: '"ぼく官3 成田WW StageS01 Good-bye and Hello!①"',
+                        description: 'first descr',
+                        video_id: 'RCNJP13juCbM',
+                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
+                        featured: false,
+                    },
                 ]
             }
-        },
-        methods: {
         },
         components: {
             'big-search': BigSearch,
