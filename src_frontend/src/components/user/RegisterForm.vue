@@ -39,6 +39,11 @@
                   :rules="passwordRules"
                   type="password" />
                 </v-form>
+                <ul>
+                  <li class="red--text subheading" v-for="err in errors">
+                    {{err}}
+                  </li>
+                </ul>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -68,41 +73,42 @@
     export default {
         data: () => {
             return {
+                errors: [],
                 isLoading: false,
-              username: "",
-              password: "",
-              valid: true,
-              dialog: false,
-              passwordRules: [
-                value => !!value || 'Required.',
-                value => {
-                  if (value)
-                    return value.length >= 8 || 'Min length is 8 symbols.'
-                  return true
-                }
-              ],
-              usernameRules: [
-                v => !!v || 'Required.'
-              ],
-              email: "",
-              emailRules: [
-                v => !!v || 'Required',
-                v => /.+@.+/.test(v) || 'E-mail must be valid'
-            ],
-          }
+                username: "",
+                password: "",
+                valid: true,
+                dialog: false,
+                passwordRules: [
+                    value => !!value || 'Required.',
+                    value => {
+                    if (value)
+                        return value.length >= 8 || 'Min length is 8 symbols.'
+                    return true
+                    }
+                ],
+                usernameRules: [
+                    v => !!v || 'Required.'
+                ],
+                email: "",
+                emailRules: [
+                    v => !!v || 'Required',
+                    v => /.+@.+/.test(v) || 'E-mail must be valid'
+                ],
+            }
         },
         methods: {
-          close() {
-            this.$refs.form.resetValidation()
-            this.dialog = false;
-          },
-          show() {
-              this.dialog = !this.dialog;
-          },
-          handleData() {
-            if (this.$refs.form.validate())
-              this.isLoading = true;
-          }
+            close() {
+                this.$refs.form.resetValidation()
+                this.dialog = false;
+            },
+            show() {
+                this.dialog = !this.dialog;
+            },
+            handleData() {
+                if (this.$refs.form.validate())
+                this.isLoading = true;
+            }
         }
     }
 </script>
