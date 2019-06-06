@@ -1,16 +1,18 @@
 <template>
     
     <v-flex xs12 sm6 md4 lg3 class="pl-1 pb-2">
-        <v-card>
+        <v-card height="320">
             <v-img
-                class="white--text"
+                class="white--text search-item-img"
                 height="200px"
                 :src="$props.preview_url"
+                @click.stop="showDialog($props.video_id)"
                 >
                 <v-container fluid pt-1 pr-1>
                     <v-layout justify-end row>
-                        <v-btn icon >
-                            <v-icon color="white">favorite</v-icon>
+                        
+                        <v-btn icon dark @click.stop="featured=!featured">
+                            <v-icon :color="featured ? 'red' : 'white'" medium>favorite</v-icon>
                         </v-btn>
                     </v-layout>
                 </v-container>
@@ -30,13 +32,15 @@
         props: ['title', 'description', 'video_id', 'preview_url'],
         data: () => {
             return {
-                dialog: false
+                dialog: false,
+                featured: false,
             }
         },
         components: {
         },
         methods: {
-            showDialog: function (video_id) {
+            showDialog(video_id) {
+                this.$parent.$refs.media.title=this.$props.title;
                 this.$parent.$refs.media.show(video_id);
             }
         }

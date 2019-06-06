@@ -6,6 +6,7 @@
                 class="search-field"
                 v-model="message"
                 append-outer-icon="send"
+                prepend-icon="search"
                 
                 clear-icon="clear"
                 clearable
