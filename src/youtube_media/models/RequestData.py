@@ -11,6 +11,9 @@ class RequestData(models.Model):
     etag = models.CharField(max_length=256)
     next_page = models.CharField(max_length=64, blank=True, null=True,)
     prev_page = models.CharField(max_length=64, blank=True, null=True,)
+    page_token = models.CharField(
+        max_length=64, blank=True, null=True,
+        db_index=True, unique=True)
 
     updated_at = models.DateTimeField(db_index=True, auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)

@@ -83,9 +83,9 @@ class GetMediaListAPIView(generics.GenericAPIView):
     def post(self, request, *a, **kw):
         q = request.data.get('q', '').replace(' ', '+')
         hash_q = hashlib.md5(q.encode()).hexdigest()
-
+        page_token = request.data.get('page_token', None)
         try:
-            r = RequestData.objects.get(hash_data=hash_q)
+            r = RequestData.objects.get(hash_data=hash_q, page_token=page_token)
             if r.click_count > 0:
                 data = self.validate_db_data(self.get_from_db(r))
             else:
