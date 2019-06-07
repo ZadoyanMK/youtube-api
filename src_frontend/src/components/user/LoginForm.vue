@@ -44,7 +44,7 @@
                   color="red darken-2" 
                   @click="close"
                   :disabled="isLoading"
-                >Dissmis</v-btn>
+                >Dismiss</v-btn>
                 <v-btn 
                   flat 
                   color="green darken-1" 

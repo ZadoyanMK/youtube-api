@@ -2,54 +2,45 @@
 <div>
     <main-header/>
     <v-container  >
-        <big-search />
-        <v-layout flex class="pt-0">
-            <div class="headline pt-2">
-                Results:
-            </div>
-            <v-spacer />
-            <div class="pt-2">
-                <v-btn icon class="ma-0">
-                    <v-icon color="grey darken-1" medium>keyboard_arrow_left</v-icon>
-                </v-btn>
-                <v-btn icon class="ma-0">
-                    <v-icon color="grey darken-1" medium>keyboard_arrow_right</v-icon>
-                </v-btn>
-            </div>
-        </v-layout>
-        
-        <v-divider color="grey" class="mb-2"/>
+        <big-search v-on:startSearch="startSearch" />
+        <div v-if="this.items.length != 0">
+            <v-layout flex class="pt-0">
+                <div class="headline pt-2">
+                    Results:
+                </div>
+                <v-spacer />
+                <div class="pt-2">
+                    <v-btn icon class="ma-0">
+                        <v-icon color="grey darken-1" medium>keyboard_arrow_left</v-icon>
+                    </v-btn>
+                    <v-btn icon class="ma-0">
+                        <v-icon color="grey darken-1" medium>keyboard_arrow_right</v-icon>
+                    </v-btn>
+                </div>
+            </v-layout>
+            
+            <v-divider color="grey" class="mb-2"/>
 
-        <v-layout row wrap v-scroll="onScroll">
-        <search-item v-for="item in this.items" :key="item.video_id"
-            :item="item"/>
-        <media-element ref="media"/>
-        </v-layout>
-        <v-btn
-            v-show="displayReturnButton"
-            fixed
-            dark
-            fab
-            bottom
-            right
-            color="grey lighten-1"
-            @click="returnToTop"
-        >
-            <v-icon color="black" large>keyboard_arrow_up</v-icon>
-        </v-btn>
-        <!-- <v-btn
-            dark
-            fab
-            color="blue lighten-1"
-            class="auth-detail-btn"
-            :class="displayReturnButton ? 'auth-detail-btn-moved' : ''"
-            icon
-        >
-            <v-icon color="black" large>account_circle</v-icon>
-        </v-btn> -->
-        
+            <v-layout row wrap v-scroll="onScroll">
+            <search-item v-for="item in this.items" :key="item.video_id"
+                :item="item"/>
+            <media-element ref="media"/>
+            </v-layout>
+            <v-btn
+                v-show="displayReturnButton"
+                fixed
+                dark
+                fab
+                bottom
+                right
+                color="grey lighten-1"
+                @click="returnToTop"
+            >
+                <v-icon color="black" large>keyboard_arrow_up</v-icon>
+            </v-btn>
+        </div>
     </v-container>
-
+    <big-process ref="bigProcess" />
     <login-form ref="loginForm" />
     <register-form ref="registerForm" />
     <user-info ref="userInfo" />
@@ -65,7 +56,7 @@
     import LoginForm from "@/components/user/LoginForm";
     import RegisterForm from "@/components/user/RegisterForm";
     import UserInfo from "@/components/user/UserInfo";
-    
+    import BigProcess from "@/components/progress/BigProcess";
 
     export default {
         methods: {
@@ -78,23 +69,9 @@
                     offset: 0,
                     easing: 'linear'
                 });
-            }
-        },
-        watch:{
-            offsetTop (o, n) {
-                if (n >= this.displayReturnButtonValue) {
-                    this.displayReturnButton = true;
-                } else {
-                    this.displayReturnButton = false;
-                }
-            }
-        },
-        data: () => {
-            return {
-                displayReturnButtonValue: 200,
-                displayReturnButton: false,
-                offsetTop: 0,
-                items: [
+            },
+            setItems() {
+                this.items = [
                     {
                         id: 1,
                         title: 'First',
@@ -111,18 +88,43 @@
                         preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
                         featured: false,
                     },
-                  
                 ]
+                this.$refs.bigProcess.close();
+            },
+
+            startSearch(q) {
+                this.isLoading = true;
+                this.$refs.bigProcess.show();
+                setTimeout(() => (this.setItems()), 2000);
+            }
+        },
+        watch:{
+            offsetTop (o, n) {
+                if (n >= this.displayReturnButtonValue) {
+                    this.displayReturnButton = true;
+                } else {
+                    this.displayReturnButton = false;
+                }
+            },
+        },
+        data: () => {
+            return {
+                isLoading: true,
+                displayReturnButtonValue: 200,
+                displayReturnButton: false,
+                offsetTop: 0,
+                items: []
             }
         },
         components: {
-            'big-search': BigSearch,
-            'search-item': SearchItem,
-            'media-element': MediaElement,
-            'login-form': LoginForm,
-            'register-form': RegisterForm,
-            'user-info': UserInfo,
-            'main-header': Header,
+            'big-search':       BigSearch,
+            'search-item':      SearchItem,
+            'media-element':    MediaElement,
+            'login-form':       LoginForm,
+            'register-form':    RegisterForm,
+            'user-info':        UserInfo,
+            'main-header':      Header,
+            'big-process':      BigProcess
         }
     }
 </script>

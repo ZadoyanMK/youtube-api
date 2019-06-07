@@ -17,7 +17,7 @@
   export default {
     data: () => {
       return {
-        logined: true,
+        logined: false,
         username: "konzamir"
       }
     },

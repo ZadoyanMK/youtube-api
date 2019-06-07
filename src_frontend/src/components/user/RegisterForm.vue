@@ -52,13 +52,13 @@
                     color="red darken-2" 
                     @click="close"
                     :disabled="isLoading"    
-                >Dissmis</v-btn>
+                >Dismiss</v-btn>
                 <v-btn 
                   flat 
                   color="green darken-1" 
                   @click="handleData"
                   :disabled="!valid || isLoading"
-                >Login</v-btn>
+                >Register</v-btn>
                 <v-progress-circular
                   v-show="isLoading"
                   indeterminate

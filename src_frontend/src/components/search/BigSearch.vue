@@ -1,5 +1,5 @@
 <template>
-    <v-form>
+    <v-form ref="form" lazy-validation>
     <v-container >
         <v-layout justify-center row>
             <v-text-field
@@ -9,6 +9,7 @@
                 append-outer-icon="send"
                 prepend-icon="search"
                 
+
                 clear-icon="clear"
                 clearable
                 label="What do you want to found?"
@@ -35,7 +36,10 @@
 
         methods: {
             sendMessage: function() {
-                this.clearMessage()
+                // this.clearMessage();
+                if (this.message != ''){
+                    this.$emit('startSearch', this.message);
+                }
             },
             clearMessage: function(){
                 this.message = ''

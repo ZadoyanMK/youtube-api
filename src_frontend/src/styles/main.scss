@@ -2,13 +2,11 @@
 @import "./search.scss";
 @import "./forms.scss";
 
-.auth-detail-btn, .auth-detail-btn:hover{
-    position: fixed;
-    right: 8px;
-    bottom: 10px;
-    z-index: 3;
+.big-process-layout{
+    height: 290px !important;
+    // width: 290px;
 }
-.auth-detail-btn-moved, 
-.auth-detail-btn-moved:hover {
-    bottom: 80px;
+.big-process-dialog, .big-process-dialog:active,
+.big-process-dialog:hover{
+    box-shadow: none;
 }

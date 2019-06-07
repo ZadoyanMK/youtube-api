@@ -18,7 +18,7 @@
                     flat 
                     color="red darken-2" 
                     @click="close"  
-                >Dissmis</v-btn>
+                >Dismiss</v-btn>
                 <v-btn 
                     flat 
                     color="primary" 
