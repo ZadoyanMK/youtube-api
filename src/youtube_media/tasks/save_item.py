@@ -26,7 +26,13 @@ def save_items(d):
         links.append(l)
 
     try:
-        r = RequestData.objects.get(hash_data=data['request_data']['hash_data'])
+        page_token = data['request_data']['curr_page']
+        if page_token:
+            r = RequestData.objects.get(hash_data=data['request_data']['hash_data'],
+                curr_page=page_token)
+        else:
+            r = RequestData.objects.get(hash_data=data['request_data']['hash_data'],
+                curr_page__isnull=True)
     except RequestData.DoesNotExist:
         r = RequestData.objects.create(**data['request_data'])
     # r = RequestData(**data['request_data'])

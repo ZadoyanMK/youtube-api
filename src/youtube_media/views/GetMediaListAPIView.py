@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, exceptions
 from rest_framework.response import Response
 from ..serializers import *
 from helpers import YoutubeAPIConnector
@@ -15,7 +15,7 @@ class GetMediaListAPIView(generics.GenericAPIView):
     ]
     serializer_class = LinkSerializer
 
-    def validate_rquest_data(self, data) -> dict:
+    def validate_request_data(self, data) -> dict:
         ctx = data
         
         del ctx['request_data']["hash_data"]
@@ -56,8 +56,8 @@ class GetMediaListAPIView(generics.GenericAPIView):
             ctx['region_code'] = region_code
 
         media_list = YoutubeAPIConnector.send_request(**ctx)
+        media_list['request_data']['curr_page'] = page_token
         save_items.delay(media_list)
-
         return media_list
 
     def get_from_db(self, r) -> dict:
@@ -85,12 +85,18 @@ class GetMediaListAPIView(generics.GenericAPIView):
         hash_q = hashlib.md5(q.encode()).hexdigest()
         page_token = request.data.get('page_token', None)
         try:
-            r = RequestData.objects.get(hash_data=hash_q, page_token=page_token)
+            if page_token:
+                r = RequestData.objects.get(hash_data=hash_q, curr_page=page_token)
+            else:
+                r = RequestData.objects.get(hash_data=hash_q, curr_page__isnull=True)
+
             if r.click_count > 0:
                 data = self.validate_db_data(self.get_from_db(r))
             else:
-                data = self.validate_rquest_data(self.send_request(request))
+                data = self.validate_request_data(self.send_request(request))
         except RequestData.DoesNotExist:
-            data = self.validate_rquest_data(self.send_request(request))
+            data = self.validate_request_data(self.send_request(request))
+        except RequestData.MultipleObjectsReturned:
+            raise exceptions.APIException("Not valid input data", 500)
 
         return Response({'data': data, "error": None})
