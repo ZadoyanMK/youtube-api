@@ -109,11 +109,15 @@
         },
         data: () => {
             return {
-                isLoading: true,
                 displayReturnButtonValue: 200,
                 displayReturnButton: false,
                 offsetTop: 0,
                 items: []
+            }
+        },
+        computed: {
+            isLoading() {
+                return this.$store.state.isLoading;
             }
         },
         components: {
@@ -125,6 +129,9 @@
             'user-info':        UserInfo,
             'main-header':      Header,
             'big-process':      BigProcess
+        },
+        beforeMount() {
+            this.$store.dispatch('initial');
         }
     }
 </script>

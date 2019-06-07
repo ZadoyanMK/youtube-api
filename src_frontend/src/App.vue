@@ -20,6 +20,6 @@ export default {
   name: "app",
   components: {
     'main-footer': Footer,
-  }
+  },
 }
 </script>

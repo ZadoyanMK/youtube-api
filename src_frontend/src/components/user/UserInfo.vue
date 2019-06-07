@@ -30,7 +30,7 @@
                             column
                             justify-center
                             >
-                            <h1 class="display-2">{{username[0]}}</h1>
+                            <h1 class="display-3 text-capitalize">{{username[0]}}</h1>
                             </v-layout>
                         </v-parallax>
                         </v-layout>
@@ -82,35 +82,46 @@
         data: () => {
             return {
                 errors: [],
-                isLoading: false,
                 username: "konzamir",
                 dialog: false,
                 email: "s@s.com",
                 featuredCount: 29,
             }
         },
-        watchers: {
-            confirmLogout(o, n) {
-                if (n) {
-                    this.isLoading = true;
-                }
+        computed:{
+            isLoading(){
+                return this.$store.state.isLoading;
             }
         },
         methods: {
             confirmLogoutF(confirmed){
                 if (confirmed) {
-                    this.isLoading = true;
+                    this.$store.dispatch('logoutAction')
+                    .then((response) => {
+                        this.$store.commit('removeUser', false);
+                        this.$store.commit('setLoadingStatus', false);
+                        this.close();
+                    })
+                    .catch((err) => {
+                        this.errors = error.response.data.errors;
+                        this.$store.commit('setLoadingStatus', false);
+                    })
                 }
             },
-          close() {
-            this.dialog = false;
-          },
-          logout() {
-              this.$refs.confirmation.show();
-          },
-          show() {
-              this.dialog = !this.dialog;
-          },
+            close() {
+                this.dialog = false;
+            },
+            logout() {
+                this.$refs.confirmation.show();
+            },
+            show() {
+                let user = this.$store.state.user;
+                this.username = user.username;
+                this.email = user.email;
+                this.featuredCount = user.links.length;
+                this.dialog = !this.dialog;
+
+            },
         },
         components: {
             'confirmation': LogoutConfirmation

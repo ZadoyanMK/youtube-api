@@ -85,8 +85,14 @@
       },
       computed:{
         isLoading(){
-          console.log(this.$store.state.isLoading)
           return this.$store.state.isLoading;
+        }
+      },
+      watch: {
+        '$store.state.errors.loginErrors': (o, n) => {
+          if (n.length > 0){
+            this.errors = n;
+          }
         }
       },
       methods: {
@@ -102,7 +108,16 @@
             this.$store.dispatch('loginAction', {
               username: this.username,
               password: this.password
-            })           
+            })
+            .then((response) => {
+                this.$store.commit("setUser", response.data.data);
+                this.$store.commit('setLoadingStatus', false);
+                this.close()
+            })
+            .catch((error) => {
+                this.errors = error.response.data.errors;
+                this.$store.commit('setLoadingStatus', false);
+            })
             
           }
             // this.isLoading = true;

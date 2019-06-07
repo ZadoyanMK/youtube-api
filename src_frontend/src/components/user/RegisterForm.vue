@@ -74,7 +74,6 @@
         data: () => {
             return {
                 errors: [],
-                isLoading: false,
                 username: "",
                 password: "",
                 valid: true,
@@ -97,6 +96,11 @@
                 ],
             }
         },
+        computed:{
+          isLoading(){
+            return this.$store.state.isLoading;
+          }
+        },
         methods: {
             close() {
                 this.$refs.form.resetValidation()
@@ -106,8 +110,22 @@
                 this.dialog = !this.dialog;
             },
             handleData() {
-                if (this.$refs.form.validate())
-                this.isLoading = true;
+                if (this.$refs.form.validate()){
+                  this.$store.dispatch('registerAction', {
+                    username: this.username,
+                    email: this.email,
+                    password: this.password
+                  })
+                  .then((response) => {
+                      this.$store.commit("setUser", response.data.data);
+                      this.$store.commit('setLoadingStatus', false);
+                      this.close()
+                  })
+                  .catch((error) => {
+                      this.errors = error.response.data.errors;
+                      this.$store.commit('setLoadingStatus', false);
+                  })
+                }
             }
         }
     }

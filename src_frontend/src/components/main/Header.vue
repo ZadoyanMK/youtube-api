@@ -17,8 +17,16 @@
   export default {
     data: () => {
       return {
-        logined: false,
-        username: "konzamir"
+        username: ""
+      }
+    },
+    computed: {
+      logined() {
+        if (this.$store.state.user.token) {
+          this.username = this.$store.state.user.username
+          return true;
+        }
+        return false;
       }
     },
     methods: {

@@ -1,7 +1,7 @@
 const state = {
     isLoading:      false,
     user:           {
-        token:          '',
+        token:          null,
         username:       '',
         email:          '',
         links:          []
