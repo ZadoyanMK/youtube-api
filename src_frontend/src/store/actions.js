@@ -70,6 +70,16 @@ const actions = {
             data: {},
             headers: headers
         })
+    },
+    getMedia({dispatch, commit, state}, payload){
+        // commit('setLoadingStatus', true);
+
+        return axios({
+            method: 'post',
+            url: `${urlEntripoint}/get-media/`,
+            data: payload,
+            headers: defaultHeaders
+        })
     }
 }
 

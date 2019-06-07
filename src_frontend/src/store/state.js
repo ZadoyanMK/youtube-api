@@ -11,7 +11,8 @@ const state = {
         currPageToken:  null,
         nextPageToken:  null,
         prevPageToken:  null
-    }
+    },
+    videos:         []
 }
 
 export default state;

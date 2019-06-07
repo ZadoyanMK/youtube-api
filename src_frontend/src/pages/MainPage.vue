@@ -3,17 +3,22 @@
     <main-header/>
     <v-container  >
         <big-search v-on:startSearch="startSearch" />
-        <div v-if="this.items.length != 0">
+        <ul>
+            <li class="red--text subheading" v-for="err in errors">
+                {{err}}
+            </li>
+        </ul>
+        <div v-if="this.fetched">
             <v-layout flex class="pt-0">
                 <div class="headline pt-2">
                     Results:
                 </div>
                 <v-spacer />
                 <div class="pt-2">
-                    <v-btn icon class="ma-0">
+                    <v-btn icon class="ma-0" :disabled="!!prevPage">
                         <v-icon color="grey darken-1" medium>keyboard_arrow_left</v-icon>
                     </v-btn>
-                    <v-btn icon class="ma-0">
+                    <v-btn icon class="ma-0" :disabled="!!nextPage">
                         <v-icon color="grey darken-1" medium>keyboard_arrow_right</v-icon>
                     </v-btn>
                 </div>
@@ -22,9 +27,13 @@
             <v-divider color="grey" class="mb-2"/>
 
             <v-layout row wrap v-scroll="onScroll">
-            <search-item v-for="item in this.items" :key="item.video_id"
-                :item="item"/>
-            <media-element ref="media"/>
+                <div v-if="this.items.length > 0">
+                    <search-item v-for="item in this.items" :key="item.video_id"
+                        :item="item"/>
+                </div>
+                <div v-else>
+                   No media were found!
+                </div>            
             </v-layout>
             <v-btn
                 v-show="displayReturnButton"
@@ -40,6 +49,7 @@
             </v-btn>
         </div>
     </v-container>
+    <media-element ref="media"/>
     <big-process ref="bigProcess" />
     <login-form ref="loginForm" />
     <register-form ref="registerForm" />
@@ -59,6 +69,20 @@
     import BigProcess from "@/components/progress/BigProcess";
 
     export default {
+        data: () => {
+            return {
+                displayReturnButtonValue:   200,
+                displayReturnButton:        false,
+                offsetTop:                  0,
+                items:                      [],
+                errors:                     [],
+                query:                      "",
+                fetched:                    false,
+                currPage:                   null,
+                nextPage:                   null,
+                prevPage:                   null
+            }
+        },
         methods: {
             onScroll (e) {
                 this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
@@ -71,31 +95,40 @@
                 });
             },
             setItems() {
-                this.items = [
-                    {
-                        id: 1,
-                        title: 'First',
-                        description: 'first descr',
-                        video_id: '_8aKKEjIO2g',
-                        preview_url: 'https://i.ytimg.com/vi/_8aKKEjIO2g/hqdefault.jpg',
-                        featured: false,
-                    },
-                    {
-                        id: 2,
-                        title: '"ぼく官3 成田WW StageS01 Good-bye and Hello!①"',
-                        description: 'first descr',
-                        video_id: 'RCNJP1juCbM',
-                        preview_url: "https://i.ytimg.com/vi/RCNJP1juCbM/hqdefault.jpg",
-                        featured: false,
-                    },
-                ]
+                this.items = []
                 this.$refs.bigProcess.close();
             },
-
-            startSearch(q) {
-                this.isLoading = true;
+            sendRequest(pageToken){
+                let payload = {
+                    q: this.query
+                }
+                if (pageToken){
+                    payload['page_token'] = pageToken;
+                }
                 this.$refs.bigProcess.show();
-                setTimeout(() => (this.setItems()), 2000);
+                
+                this.$store.dispatch('getMedia', payload)
+                .then((response) => {
+                    this.$refs.bigProcess.close();
+                    // console.log(response.data);
+
+                    this.currPage = response.data.data.request_data.curr_page;
+                    this.prevPage = response.data.data.request_data.prev_page;
+                    this.nextPage = response.data.data.request_data.next_page;
+                    
+                    this.items = response.data.data.links;
+
+                    this.fetched = true;
+                })
+                .catch((err) => {
+                    this.$refs.bigProcess.close();
+                    this.errors = error.response.data.errors;
+                    this.fetched = true;
+                })
+            },
+            startSearch(q) {
+                this.query = q;
+                this.sendRequest(null);
             }
         },
         watch:{
@@ -106,19 +139,6 @@
                     this.displayReturnButton = false;
                 }
             },
-        },
-        data: () => {
-            return {
-                displayReturnButtonValue: 200,
-                displayReturnButton: false,
-                offsetTop: 0,
-                items: []
-            }
-        },
-        computed: {
-            isLoading() {
-                return this.$store.state.isLoading;
-            }
         },
         components: {
             'big-search':       BigSearch,
