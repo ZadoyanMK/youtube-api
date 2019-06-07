@@ -66,22 +66,27 @@
       data: () => {
           return {
             errors: [],
-            isLoading: false,
             username: "",
             password: "",
             valid: true,
             dialog: false,
             passwordRules: [
               value => !!value || 'Required.',
-              value => {
-                if (value)
-                  return value.length >= 8 || 'Min length is 8 symbols.'
-                return true
-              }
+              // value => {
+              //   if (value)
+              //     return value.length >= 8 || 'Min length is 8 symbols.'
+              //   return true
+              // }
             ],
             usernameRules: [
               v => !!v || 'Required.'
             ]
+        }
+      },
+      computed:{
+        isLoading(){
+          console.log(this.$store.state.isLoading)
+          return this.$store.state.isLoading;
         }
       },
       methods: {
@@ -93,8 +98,14 @@
             this.dialog = !this.dialog;
         },
         handleData() {
-          if (this.$refs.form.validate())
-            this.isLoading = true;
+          if (this.$refs.form.validate()){
+            this.$store.dispatch('loginAction', {
+              username: this.username,
+              password: this.password
+            })           
+            
+          }
+            // this.isLoading = true;
         }
       }
     }

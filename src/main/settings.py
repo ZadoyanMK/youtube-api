@@ -27,12 +27,17 @@ INSTALLED_APPS = [
     'knox',
     'accounts',
     'youtube_media',
+
     'django_extensions',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -138,3 +143,8 @@ REST_FRAMEWORK = {
 
 YOUTUBE_API_KEY = config.get('APP', 'youtube_api_key')
 ITEMS_PER_PAGE = config.get('APP', 'items_per_page')
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:5000'
+]
