@@ -85,7 +85,6 @@
                 username: "",
                 dialog: false,
                 email: "",
-                // featuredCount: 29,
             }
         },
         computed:{
@@ -98,7 +97,8 @@
         },
         methods: {
             getFeatured (){
-
+                this.$parent.getFeatured();
+                this.close();
             },
             confirmLogoutF(confirmed){
                 if (confirmed) {

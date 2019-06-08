@@ -47,9 +47,10 @@
         props: ['item'],
         data: () => {
             return {
-                dialog: false,
-                featured: false,
-                interval: null,
+                dialog:                 false,
+                featured:               false,
+                interval:               null,
+                sendingRequestDelay:    1000
             }
         },
         computed: {
@@ -80,7 +81,7 @@
                 if (this.featured){
                     if (!this.$store.state.user.links.includes(videoId))
                     {
-                        
+                        this.$store.commit('addFeatured', videoId);
                         this.$store.dispatch('addFeatured', payload)
                         .catch((err) => {
                             this.featured = !this.featured;
@@ -93,7 +94,7 @@
                     var index = arr.indexOf(videoId);
                     
                     if (index > -1) {
-                        
+                        this.$store.commit('removeFeatured', videoId);
                         this.$store.dispatch('removeFeatured', payload)
                         .catch((err) => {
                             this.featured = !this.featured;
@@ -108,17 +109,11 @@
                     this.featured = !this.featured;
                     const videoId = this.$props.item.video_id;
 
-                    if (this.featured) {
-                        this.$store.commit('addFeatured', videoId);
-                    } else {
-                        this.$store.commit('removeFeatured', videoId);
-                    }
-
                     clearInterval(this.interval);
                     this.interval = setInterval(() => {
                         this.sendFeaturedRequest();
                         clearInterval(this.interval);
-                    }, 2000);
+                    }, this.sendingRequestDelay);
                 } else {
                     this.sendErrorMessage("You must be logined to add media to favourites!");
                 }

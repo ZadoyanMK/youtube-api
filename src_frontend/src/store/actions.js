@@ -113,6 +113,19 @@ const actions = {
             // commit('removeFeatured', payload.video_id);
         })
     },
+    getFeaturedList({dispatch, commit, state}) {
+        const token = state.user.token;
+        let headers = {
+            'Authorization': `Token ${token}`,
+            ...defaultHeaders
+        };
+
+        return axios({
+            method: 'get',
+            url: `${urlEntripoint}/featured/`,
+            headers: headers
+        })
+    }
 }
 
 export default actions;

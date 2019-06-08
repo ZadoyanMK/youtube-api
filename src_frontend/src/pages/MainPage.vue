@@ -54,7 +54,8 @@
     <user-info ref="userInfo" />
     <error-dialog ref="errorDialog" />
     <success-dialog ref="successDialog" />
-    
+    <success-alert ref="successAlert" />
+
   </div>  
 </template>
 
@@ -69,6 +70,7 @@
     import BigProcess from "@/components/progress/BigProcess";
     import ErrorDialog from '@/components/dialogs/ErrorDialog';
     import SuccessDialog from '@/components/dialogs/SuccessDialog';
+    import SuccessAlert from '@/components/dialogs/SuccessAlert';
 
     export default {
         data: () => {
@@ -82,10 +84,14 @@
                 fetched:                    false,
                 currPage:                   null,
                 nextPage:                   null,
-                prevPage:                   null
+                prevPage:                   null,
+                gettingFeaturedKeyPhrase:   "#featured-media"
             }
         },
         methods: {
+            showAlert(d) {
+                this.$refs.successAlert.show(d);
+            },
             onScroll (e) {
                 this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
             },
@@ -94,6 +100,37 @@
                     duration: 200,
                     offset: 0,
                     easing: 'linear'
+                });
+            },
+            getFeatured() {
+                this.query = this.gettingFeaturedKeyPhrase;
+                this.$refs.bigSearch.setMessage(this.query);
+
+                this.$router.push({
+                    path: '/',
+                    query: {
+                        q: this.query
+                    }
+                });
+
+                this.sendGettingFeatureRequest();
+            },
+            sendGettingFeatureRequest(){
+                this.$refs.bigProcess.show();
+                this.$store.dispatch('getFeaturedList')
+                .then((response) => {
+                    this.$refs.bigProcess.close();
+                    this.items = response.data.data.links;
+                    this.nextPage = null;
+                    this.prevPage = null;
+                    this.currPage = null;
+
+                    this.fetched = true;
+                })
+                .catch((err) => {
+                    this.$refs.bigProcess.close();
+                    this.errors = error.response.data.errors;
+                    this.fetched = true;
                 });
             },
             sendRequest(pageToken){
@@ -139,7 +176,11 @@
             },
             startSearch(q) {
                 this.query = q;
-                this.sendRequest(null);
+                if (q == this.gettingFeaturedKeyPhrase){
+                    this.sendGettingFeatureRequest();
+                } else {
+                    this.sendRequest(null);
+                }
             }
         },
         watch:{
@@ -161,14 +202,19 @@
             'main-header':      Header,
             'big-process':      BigProcess,
             'error-dialog':     ErrorDialog,
-            'success-dialog':    SuccessDialog
+            'success-dialog':   SuccessDialog,
+            'success-alert':    SuccessAlert,
         },
         mounted() {
             if (this.$route.query.q) {
                 this.query = this.$route.query.q;
                 this.$refs.bigSearch.setMessage(this.query);
 
-                this.sendRequest(this.$route.query.p);
+                if (this.query == this.gettingFeaturedKeyPhrase){
+                    this.sendGettingFeatureRequest();
+                } else {
+                    this.sendRequest(this.$route.query.p);
+                }
             }
         },
         beforeMount() {

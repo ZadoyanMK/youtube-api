@@ -103,7 +103,8 @@
         },
         methods: {
             close() {
-                this.$refs.form.resetValidation()
+                this.$refs.form.resetValidation();
+                this.errors = [];
                 this.dialog = false;
             },
             show() {
