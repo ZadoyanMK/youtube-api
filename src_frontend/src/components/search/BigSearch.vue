@@ -1,5 +1,8 @@
 <template>
-    <v-form ref="form" lazy-validation>
+    <v-form ref="form" 
+    lazy-validation
+    @submit="submitForm"
+    >
     <v-container >
         <v-layout justify-center row>
             <v-text-field
@@ -35,13 +38,17 @@
         },
 
         methods: {
-            sendMessage: function() {
+            submitForm(e){
+                this.sendMessage();
+                e.preventDefault();
+            },
+            sendMessage() {
                 // this.clearMessage();
                 if (this.message != ''){
                     this.$emit('startSearch', this.message);
                 }
             },
-            clearMessage: function(){
+            clearMessage(){
                 this.message = ''
             },
         }

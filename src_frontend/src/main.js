@@ -9,7 +9,7 @@ import routes from '@/routes';
 
 
 import 'vuetify/dist/vuetify.min.css'
-import "@/styles/main.scss";
+import "./styles/main.scss";
 
 Vue.use(VueRouter);
 Vue.use(Vuetify)

@@ -72,11 +72,11 @@
             dialog: false,
             passwordRules: [
               value => !!value || 'Required.',
-              // value => {
-              //   if (value)
-              //     return value.length >= 8 || 'Min length is 8 symbols.'
-              //   return true
-              // }
+              value => {
+                if (value)
+                  return value.length >= 8 || 'Min length is 8 symbols.'
+                return true
+              }
             ],
             usernameRules: [
               v => !!v || 'Required.'

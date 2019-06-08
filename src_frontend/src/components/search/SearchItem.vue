@@ -24,7 +24,10 @@
             </v-img>
             <v-card-title>
                 <div>
-                    <span class="headline"> <a @click.stop="showDialog">{{$props.item.title}}</a></span><br>
+                    <span class="font-weight-regular" :class="titleClass"> 
+                        <a @click.stop="showDialog">{{$props.item.title}}</a>
+                    </span>
+                    <br>
                     <span class="grey--text">Number 10</span><br>
                 </div>
             </v-card-title>
@@ -44,6 +47,18 @@
             return {
                 dialog: false,
                 featured: false,
+            }
+        },
+        computed: {
+            titleClass(){
+                const titleLength = this.$props.item.title.length;
+
+                if (titleLength > 30) {
+                    return 'subheading';
+                } else if (titleLength > 15) {
+                    return 'title';
+                }
+                return 'headline';
             }
         },
         components: {

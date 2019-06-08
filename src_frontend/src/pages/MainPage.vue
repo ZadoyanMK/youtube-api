@@ -15,10 +15,10 @@
                 </div>
                 <v-spacer />
                 <div class="pt-2">
-                    <v-btn icon class="ma-0" :disabled="!!prevPage">
+                    <v-btn icon class="ma-0" :disabled="prevPage == null" @click="sendRequest(prevPage)">
                         <v-icon color="grey darken-1" medium>keyboard_arrow_left</v-icon>
                     </v-btn>
-                    <v-btn icon class="ma-0" :disabled="!!nextPage">
+                    <v-btn icon class="ma-0" :disabled="nextPage == null" @click="sendRequest(nextPage)">
                         <v-icon color="grey darken-1" medium>keyboard_arrow_right</v-icon>
                     </v-btn>
                 </div>
@@ -26,15 +26,13 @@
             
             <v-divider color="grey" class="mb-2"/>
 
-            <v-layout row wrap v-scroll="onScroll">
-                <div v-if="this.items.length > 0">
-                    <search-item v-for="item in this.items" :key="item.video_id"
-                        :item="item"/>
-                </div>
-                <div v-else>
-                   No media were found!
-                </div>            
+            <v-layout row wrap v-scroll="onScroll" v-if="this.items.length > 0">
+                <search-item v-for="item in this.items" :key="item.video_id"
+                    :item="item"/>    
             </v-layout>
+            <v-layout row wrap justify-center v-scroll="onScroll" v-else class="display-1 pt-2">
+                No media were found!
+            </v-layout>    
             <v-btn
                 v-show="displayReturnButton"
                 fixed
