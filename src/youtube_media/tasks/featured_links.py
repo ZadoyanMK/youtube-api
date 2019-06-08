@@ -8,16 +8,27 @@ from django.contrib.auth.models import User
 def save_featured_link(data):
     link = Links.objects.get(video_id=data['video_id'])
     user = User.objects.get(id=data['user_id'])
-    Featured.objects.create(
-        link=link, user=user
-    )
+    try:
+        f = Featured.objects.get(link=link, user=user)
+    except Featured.DoesNotExist:
+        f = Featured.objects.create(
+            link=link, user=user
+        )
+    
+    return f
 
 
 def remove_featured_link(data):
     link = Links.objects.get(video_id=data['video_id'])
     user = User.objects.get(id=data['user_id'])
-    f = Featured.objects.get(link=link, user=user)
-    f.delete()
+    try:
+        f = Featured.objects.get(link=link, user=user)
+        f.delete()
+    except Featured.DoesNotExist:
+        f = None
+    
+    return f
+    
 
 
 @app.task

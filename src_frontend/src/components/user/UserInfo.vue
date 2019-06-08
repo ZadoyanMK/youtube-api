@@ -82,15 +82,18 @@
         data: () => {
             return {
                 errors: [],
-                username: "konzamir",
+                username: "",
                 dialog: false,
-                email: "s@s.com",
-                featuredCount: 29,
+                email: "",
+                // featuredCount: 29,
             }
         },
         computed:{
             isLoading(){
                 return this.$store.state.isLoading;
+            },
+            featuredCount() {
+                return this.$store.state.user.links.length;
             }
         },
         methods: {
@@ -101,6 +104,7 @@
                         this.$store.commit('removeUser', false);
                         this.$store.commit('setLoadingStatus', false);
                         this.close();
+                        this.$parent.$refs.successDialog.show('Logout successful!');
                     })
                     .catch((err) => {
                         this.errors = error.response.data.errors;
@@ -118,7 +122,6 @@
                 let user = this.$store.state.user;
                 this.username = user.username;
                 this.email = user.email;
-                this.featuredCount = user.links.length;
                 this.dialog = !this.dialog;
 
             },

@@ -26,7 +26,7 @@ class GetMediaListAPIView(generics.GenericAPIView):
 
         for x in ctx['links']:
             del x['etag']
-            x['featured'] = False
+            # x['featured'] = False
         return ctx
 
     def validate_db_data(self, data) -> dict:
@@ -36,7 +36,7 @@ class GetMediaListAPIView(generics.GenericAPIView):
             x['title'] = x['title'].encode('iso-8859-1').decode('utf-8')
             x['description'] = x['description'].encode('iso-8859-1').decode('utf-8')
             x['channel_title'] = x['channel_title'].encode('iso-8859-1').decode('utf-8')
-            x['featured'] = False
+            # x['featured'] = False
         
         return ctx
 

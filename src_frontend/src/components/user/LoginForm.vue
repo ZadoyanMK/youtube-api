@@ -113,6 +113,8 @@
                 this.$store.commit("setUser", response.data.data);
                 this.$store.commit('setLoadingStatus', false);
                 this.close()
+
+                this.$parent.$refs.successDialog.show('User logined!');
             })
             .catch((error) => {
                 this.errors = error.response.data.errors;

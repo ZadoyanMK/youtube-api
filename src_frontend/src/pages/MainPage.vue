@@ -52,6 +52,8 @@
     <login-form ref="loginForm" />
     <register-form ref="registerForm" />
     <user-info ref="userInfo" />
+    <error-dialog ref="errorDialog" />
+    <success-dialog ref="successDialog" />
     
   </div>  
 </template>
@@ -65,6 +67,8 @@
     import RegisterForm from "@/components/user/RegisterForm";
     import UserInfo from "@/components/user/UserInfo";
     import BigProcess from "@/components/progress/BigProcess";
+    import ErrorDialog from '@/components/dialogs/ErrorDialog';
+    import SuccessDialog from '@/components/dialogs/SuccessDialog';
 
     export default {
         data: () => {
@@ -92,10 +96,6 @@
                     easing: 'linear'
                 });
             },
-            setItems() {
-                this.items = []
-                this.$refs.bigProcess.close();
-            },
             sendRequest(pageToken){
                 let payload = {
                     q: this.query
@@ -108,7 +108,6 @@
                 this.$store.dispatch('getMedia', payload)
                 .then((response) => {
                     this.$refs.bigProcess.close();
-                    // console.log(response.data);
 
                     this.currPage = response.data.data.request_data.curr_page;
                     this.prevPage = response.data.data.request_data.prev_page;
@@ -146,7 +145,9 @@
             'register-form':    RegisterForm,
             'user-info':        UserInfo,
             'main-header':      Header,
-            'big-process':      BigProcess
+            'big-process':      BigProcess,
+            'error-dialog':     ErrorDialog,
+            'success-dialog':    SuccessDialog
         },
         beforeMount() {
             this.$store.dispatch('initial');

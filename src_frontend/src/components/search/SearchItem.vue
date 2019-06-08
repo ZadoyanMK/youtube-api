@@ -16,7 +16,7 @@
                 <v-container fluid pt-1 pr-1>
                     <v-layout justify-end row>
                         
-                        <v-btn icon dark @click.stop="featured=!featured">
+                        <v-btn icon dark @click.stop="addFeatured">
                             <v-icon :color="featured ? 'red' : 'white'" medium>favorite</v-icon>
                         </v-btn>
                     </v-layout>
@@ -33,20 +33,23 @@
             </v-card-title>
         </v-card>
         </v-hover>
+
     </v-flex>    
 </template>
 
 <script>
     export default {
         beforeMount(){
-            this.featured = this.$props.item.featured;
+            const videoId = this.$props.item.video_id;
+            const feturedList = this.$store.state.user.links;
+            this.featured = feturedList.includes(videoId);
         },
-
         props: ['item'],
         data: () => {
             return {
                 dialog: false,
                 featured: false,
+                interval: null,
             }
         },
         computed: {
@@ -67,6 +70,62 @@
             showDialog() {
                 this.$parent.$refs.media.title=this.$props.item.title;
                 this.$parent.$refs.media.show(this.$props.item.video_id);
+            },
+            sendFeaturedRequest(){
+                const videoId = this.$props.item.video_id;
+                const payload = {
+                    video_id: videoId
+                };
+
+                if (this.featured){
+                    if (!this.$store.state.user.links.includes(videoId))
+                    {
+                        
+                        this.$store.dispatch('addFeatured', payload)
+                        .catch((err) => {
+                            this.featured = !this.featured;
+                            console.log(err);
+                            this.sendErrorMessage(err.response.data.errors[0]);
+                        });
+                    }
+                } else {
+                    var arr = this.$store.state.user.links;
+                    var index = arr.indexOf(videoId);
+                    
+                    if (index > -1) {
+                        
+                        this.$store.dispatch('removeFeatured', payload)
+                        .catch((err) => {
+                            this.featured = !this.featured;
+                            console.log(err);
+                            this.sendErrorMessage(err.response.data.errors[0]);
+                        });
+                    }
+                }
+            },
+            addFeatured(){
+                if (this.$store.state.user.token){
+                    this.featured = !this.featured;
+                    const videoId = this.$props.item.video_id;
+
+                    if (this.featured) {
+                        this.$store.commit('addFeatured', videoId);
+                    } else {
+                        this.$store.commit('removeFeatured', videoId);
+                    }
+
+                    clearInterval(this.interval);
+                    this.interval = setInterval(() => {
+                        this.sendFeaturedRequest();
+                        clearInterval(this.interval);
+                    }, 2000);
+                } else {
+                    this.sendErrorMessage("You must be logined to add media to favourites!");
+                }
+                
+            },
+            sendErrorMessage(detail){
+                this.$parent.$refs.errorDialog.show(detail);
             }
         }
     }
