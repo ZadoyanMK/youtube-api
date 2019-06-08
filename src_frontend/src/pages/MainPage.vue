@@ -2,7 +2,7 @@
 <div>
     <main-header/>
     <v-container  >
-        <big-search v-on:startSearch="startSearch" />
+        <big-search v-on:startSearch="startSearch" ref="bigSearch"/>
         <ul>
             <li class="red--text subheading" v-for="err in errors">
                 {{err}}
@@ -102,6 +102,20 @@
                 }
                 if (pageToken){
                     payload['page_token'] = pageToken;
+                    this.$router.push({
+                        path: '/',
+                        query: {
+                            q: this.query,
+                            p: pageToken
+                        }
+                    })
+                } else {
+                    this.$router.push({
+                        path: '/',
+                        query: {
+                            q: this.query
+                        }
+                    })
                 }
                 this.$refs.bigProcess.show();
                 
@@ -148,6 +162,14 @@
             'big-process':      BigProcess,
             'error-dialog':     ErrorDialog,
             'success-dialog':    SuccessDialog
+        },
+        mounted() {
+            if (this.$route.query.q) {
+                this.query = this.$route.query.q;
+                this.$refs.bigSearch.setMessage(this.query);
+
+                this.sendRequest(this.$route.query.p);
+            }
         },
         beforeMount() {
             this.$store.dispatch('initial');

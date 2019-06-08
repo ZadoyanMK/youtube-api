@@ -51,6 +51,9 @@
             clearMessage(){
                 this.message = ''
             },
+            setMessage(m) {
+                this.message = m;
+            }
         }
     }
 </script>

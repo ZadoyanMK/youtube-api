@@ -42,7 +42,7 @@
                         <b>Username:</b> {{username}}
                     </blockquote>
                     <blockquote class="blockquote">
-                        <a> Get featured list ({{featuredCount}}) </a>
+                        <a @click.stop="getFeatured"> Get featured list ({{featuredCount}}) </a>
                     </blockquote>
                     <!-- <blockquote class="blockquote"> -->
                         <ul>
@@ -97,6 +97,9 @@
             }
         },
         methods: {
+            getFeatured (){
+
+            },
             confirmLogoutF(confirmed){
                 if (confirmed) {
                     this.$store.dispatch('logoutAction')
