@@ -146,5 +146,4 @@ ITEMS_PER_PAGE = config.get('APP', 'items_per_page')
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5000'
-]
+    x for x in config.get('APP', 'cors_origin_whitelist').split(',') if x]
