@@ -12,3 +12,4 @@ url=amqp://user:user@rabbitmq:5672
 allowed_hosts=*,
 youtube_api_key=
 items_per_page=25
+cors_origin_whitelist=http://localhost:5000,
