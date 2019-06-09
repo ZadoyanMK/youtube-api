@@ -5,7 +5,7 @@ services:
     container_name: youplayer_python_container
     build:
       context: .
-      dockerfile: ./docker/dev/python/Dockerfile
+      dockerfile: ./docker/python/Dockerfile
     environment:
       - PYTHONUNBUFFERED=1
     volumes:
@@ -22,9 +22,10 @@ services:
   celery:
     container_name: youplayer_celery_container
     <<: *app
+    ports: []
     volumes:
       - ./src:/src
-    command: celery -A main worker -Q save_items,celery --loglevel=INFO
+    command: celery -A main worker -Q save_items,celery,featured_links --loglevel=INFO
     networks:
       - youplayer
     depends_on:
@@ -48,7 +49,7 @@ services:
       - "3306"
     networks:
       - youplayer
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_general_ci']
     restart: always
   rabbitmq:
     container_name: youplayer_rabbitmq_container
@@ -63,6 +64,21 @@ services:
     networks:
       - youplayer
     restart: always
+  frontend:
+    container_name: youplayer_javascript_container
+    hostname: frontend
+    build: 
+      context: .
+      dockerfile: ./docker/frontend/dockerfile
+    volumes:
+      - ./src_frontend:/usr/frontend
+      - /usr/frontend/node_modules
+    ports: 
+      - "8080:80"
+    networks:
+      - youplayer
+    restart: always
+  
 networks:
   youplayer:
     driver: bridge
