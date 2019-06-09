@@ -1,10 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      
       <router-view />
-      
-      
     </v-content>
     <main-footer/>
   </v-app>
