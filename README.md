@@ -1,4 +1,3 @@
-# light-it-practic
 Project for working with Youtube API.
 
 ## How to run
